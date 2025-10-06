@@ -11,7 +11,7 @@ ber_theoretical = berawgn(params.SNR_dB_RANGE, 'psk', 4, 'nondiff'); % Theoretic
 for k = 1:length(rayleigh_channels)
     [faded_signal, path_gains] = rayleigh_channels{k}(modulated_symbols); % Apply Rayleigh fading
     N = params.SYMBOL_RATE * 0.5; % Number of samples for 0.5 seconds
-    channel_gain = 20 * log10(path_gains); % Get channel gains in dB
+    channel_gain = 20 * log10(abs(path_gains)); % Get channel gains in dB
     time = (0:N-1) / params.SYMBOL_RATE; % Time vector for 0.5 seconds
     time_ms = time * 1000; % Convert to milliseconds
 
@@ -27,11 +27,12 @@ for k = 1:length(rayleigh_channels)
     for idx = 1:length(params.SNR_dB_RANGE)
         snr = params.SNR_dB_RANGE(idx);
         received_signal = awgn(faded_signal, snr, 'measured'); % Add AWGN noise
-        received_bits = qpsk_demodulator(received_signal); % QPSK Demodulation
+        equalized_signal = received_signal ./ path_gains; % Equalization
+        received_bits = qpsk_demodulator(equalized_signal); % QPSK Demodulation
 
         % BER calculation
-        [num_errors, ber] = biterr(bit_stream, received_bits);
-        ber_vector(idx) = ber;
+        [numErrors, errorRate] = error_rate_calculator(bit_stream, received_bits);
+        ber_vector(idx) = errorRate;
     end
 
     ber_matrix(k, :) = ber_vector; % Store BER results

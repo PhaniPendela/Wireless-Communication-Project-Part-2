@@ -10,7 +10,7 @@ function bits = qpsk_demodulator(symbols)
     mapping = [1+1j, -1+1j, -1-1j, 1-1j];
     % Create a decision boundary
     % Find the nearest constellation point for each received symbol
-    [~, idx] = min(abs(symbols.' - mapping), [], 2);
+    [~, idx] = min(abs(symbols(:) - mapping), [], 2);
     mapped_symbols = mapping(idx).';
 
     % Normalize the power of the symbols

@@ -13,4 +13,9 @@ params.TARGET_INSTANTANEOUS_BER = 1e-3; % Target instantaneous BER for adaptive 
 
 % Parameters for simulation
 params.NUMBER_OF_BITS = 1e6; % Number of bits to simulate
-params.SNR_dB_RANGE = 0:2.5:25; % SNR range in dB for performance evaluation
+params.SNR_dB_RANGE = 0:1:25; % SNR range in dB for performance evaluation
+
+% Notes
+% SNR_dB_RANGE: 0:2:25 - Faster computation but less resolution
+% SNR_dB_RANGE: 0:1:25 - Slower computation but higher resolution
+% SNR_dB_RANGE: 0:5:50 - For knowing the curve trend quickly
