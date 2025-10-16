@@ -1,20 +1,19 @@
-% 64-QAM Demodulator Function
 function bits = qam_64_demodulator(symbols)
-    % Input: symbols - Received noisy symbols (complex numbers)
-    % Output: bits - Demodulated bit sequence (0s and 1s)
+    % 64-QAM demodulator — consistent with normalized 64-QAM mapping
+    % Each symbol -> 6 bits
 
-    % MAP the received symbols to the nearest constellation points
-    % 64-QAM constellation points
-    mapping = [-7-7j, -7-5j, -7-3j, -7-1j, -7+1j, -7+3j, -7+5j, -7+7j, -5-7j, -5-5j, -5-3j, -5-1j, -5+1j, -5+3j, -5+5j, -5+7j, -3-7j, -3-5j, -3-3j, -3-1j, -3+1j, -3+3j, -3+5j, -3+7j, -1-7j, -1-5j, -1-3j, -1-1j, -1+1j, -1+3j, -1+5j, -1+7j, 1-7j,  1-5j,  1-3j,  1-1j,  1+1j,  1+3j,  1+5j,  1+7j, 3-7j,  3-5j,  3-3j,  3-1j,  3+1j,  3+3j,  3+5j,  3+7j, 5-7j, 5-5j, 5-3j,  5-1j,  5+1j,  5+3j,  5+5j,  5+7j, 7-7j,  7-5j,  7-3j,  7-1j,  7+1j,  7+3j,  7+5j,  7+7j];
+    % Generate normalized 64-QAM constellation
+    re = [-7 -5 -3 -1 1 3 5 7];
+    im = [-7 -5 -3 -1 1 3 5 7];
+    [Re, Im] = meshgrid(re, im);
+    mapping = (Re(:) + 1j * Im(:)) / sqrt(42);  % normalization
 
-    % Find the nearest constellation point for each received symbol
-    [~, idx] = min(abs(symbols(:) - mapping), [], 2);
-    mapped_symbols = mapping(idx).';
+    % Find nearest constellation point for each received symbol
+    [~, idx] = min(abs(symbols(:) - mapping.'), [], 2); % idx: Nx1
 
-    % Normalize the power of the symbols
-    mapped_symbols = mapped_symbols * sqrt(42);
+    % Convert indices to bits (6 bits per symbol)
+    bit_matrix = de2bi(idx - 1, 6, 'left-msb'); % Nx6
 
-    % Map 64-QAM symbols to bits
-    bits = de2bi(find(mapped_symbols == mapping) - 1, 6, 'left-msb');
-    bits = bits(:);
+    % Reshape to row vector
+    bits = reshape(bit_matrix.', 1, []);
 end

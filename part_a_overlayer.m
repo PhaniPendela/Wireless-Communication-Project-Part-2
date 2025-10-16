@@ -26,7 +26,7 @@ for k = 1:length(rayleigh_channels)
     ber_vector = zeros(1, length(params.SNR_dB_RANGE));
     for idx = 1:length(params.SNR_dB_RANGE)
         snr = params.SNR_dB_RANGE(idx);
-        received_signal = awgn(faded_signal, snr, 'measured'); % Add AWGN noise
+        received_signal = agwn_adder(faded_signal, snr); % Add AWGN noise
         equalized_signal = received_signal ./ path_gains; % Equalization
         received_bits = qpsk_demodulator(equalized_signal); % QPSK Demodulation
 

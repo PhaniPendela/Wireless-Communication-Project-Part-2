@@ -9,7 +9,7 @@ function symbols = bpsk_modulator(bits)
     end
 
     % Map bits to BPSK symbols
-    symbols = 2*bits - 1; % Maps 0 -> -1 and 1 -> 1
+    symbols = (2*bits - 1) + 0j; % Maps 0 -> -1 and 1 -> 1
 
     % Normalize the power of the symbols
     symbols = symbols / sqrt(2/3); % Normalization factor for BPSK

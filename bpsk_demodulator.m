@@ -5,7 +5,7 @@ function bits = bpsk_demodulator(symbols)
 
     % MAP the received symbols to the nearest constellation points
     % BPSK constellation points
-    mapping = [-1, 1];
+    mapping = [-1 + 0j, 1 + 0j];
     % Find the nearest constellation point for each received symbol
     [~, idx] = min(abs(symbols(:) - mapping), [], 2);
     mapped_symbols = mapping(idx).';
