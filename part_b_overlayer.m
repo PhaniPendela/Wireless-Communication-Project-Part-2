@@ -43,3 +43,4 @@ function results = part_b_overlayer(params, snr_average, time_step_ms, sim_time_
     results.spectral_efficiency = spectral_efficiency;
     results.modulation_schemes = modulation_schemes;
 end
+
