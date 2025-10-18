@@ -1,3 +1,5 @@
+% DO NOT WORRY IF IT LOOKS STUCK! IT TOOK ME 10-15 MINS TO RUN :(
+
 run('global_params.m'); % Load global parameters
 SNR_db = 0:2:30; % SNR range in dB
 time_step_ms = 1; % Time step in milliseconds
@@ -13,7 +15,7 @@ ber_vector = fixed_rate_channel_overlayer(params, SNR_db, time_step_ms, sim_time
 % Find region where BER > 10^-2
 bad_region = ber_vector > 1e-2;
 
-figure;
+figure(Theme="Light");
 hold on;
 plot(SNR_db, avg_spectral_efficiency, 'm-o', 'LineWidth', 2, 'DisplayName', 'Adaptive System');
 yline(2, 'b--', 'LineWidth', 2, 'DisplayName', 'Fixed QPSK (2 bps/Hz)');
